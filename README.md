@@ -1,6 +1,6 @@
 # apiGo
 
-Este es un proyecto básico en Go. Incluye un programa "Hello, World!" en el archivo `main.go`.
+Esta es una plantilla con el crud de usuarios y auth en el framework GIN
 
 ## Ejecutar
 
@@ -9,4 +9,4 @@ go run main.go
 ```
 
 ## Personalización
-Puedes pedir agregar endpoints REST, middlewares, o integración con bases de datos.
+Tiene auth con jwt y permisos con roles
