@@ -8,5 +8,5 @@ Esta es una plantilla con el crud de usuarios y auth en el framework GIN
 go run main.go
 ```
 
-## Personalización
+## Contiene
 Tiene auth con jwt y permisos con roles
