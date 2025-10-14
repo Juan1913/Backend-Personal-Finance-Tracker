@@ -12,7 +12,6 @@ var jwtSecret = []byte("supersecret")
 
 type AuthService interface {
 	Login(dto dto.LoginDTO) (dto.AuthResponseDTO, error)
-	Register(dto dto.RegisterDTO) (dto.AuthResponseDTO, error)
 }
 
 type authService struct {
@@ -30,11 +29,6 @@ func (s *authService) Login(d dto.LoginDTO) (dto.AuthResponseDTO, error) {
 	}
 	token := generateToken(user.Email, string(user.Role))
 	return dto.AuthResponseDTO{Token: token, Role: string(user.Role), User: user}, nil
-}
-
-func (s *authService) Register(d dto.RegisterDTO) (dto.AuthResponseDTO, error) {
-	// El registro de usuarios se maneja en el módulo users, aquí solo autenticación
-	return dto.AuthResponseDTO{}, nil
 }
 
 func generateToken(email, role string) string {

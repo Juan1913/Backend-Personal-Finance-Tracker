@@ -9,4 +9,4 @@ go run main.go
 ```
 
 ## Contiene
-Tiene auth con jwt y permisos con roles
+Tiene auth con jwt y permisos con roles y swagger
