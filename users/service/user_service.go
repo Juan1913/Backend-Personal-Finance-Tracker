@@ -2,7 +2,7 @@ package service
 
 import (
 	"apiGo/users/dto"
-	"apiGo/users/model"
+	"apiGo/users/mapper"
 	"apiGo/users/repository"
 
 	"github.com/google/uuid"
@@ -25,17 +25,12 @@ func NewUserService(repo repository.UserRepository) UserService {
 }
 
 func (s *userService) Create(d dto.CreateUserDTO) (dto.UserDTO, error) {
-	user := model.User{
-		Name:     d.Name,
-		Email:    d.Email,
-		Password: d.Password,
-		Role:     model.Role(d.Role),
-	}
-	err := s.repo.Create(&user)
+	user := mapper.DTOToUser(&d)
+	err := s.repo.Create(user)
 	if err != nil {
 		return dto.UserDTO{}, err
 	}
-	return dto.UserDTO{ID: user.ID.String(), Name: user.Name, Email: user.Email, Role: string(user.Role)}, nil
+	return mapper.UserToDTO(user), nil
 }
 
 func (s *userService) GetAll() ([]dto.UserDTO, error) {
@@ -43,11 +38,7 @@ func (s *userService) GetAll() ([]dto.UserDTO, error) {
 	if err != nil {
 		return nil, err
 	}
-	dtos := make([]dto.UserDTO, len(users))
-	for i, u := range users {
-		dtos[i] = dto.UserDTO{ID: u.ID.String(), Name: u.Name, Email: u.Email, Role: string(u.Role)}
-	}
-	return dtos, nil
+	return mapper.UsersToDTO(users), nil
 }
 
 func (s *userService) GetByID(id string) (dto.UserDTO, error) {
@@ -59,7 +50,7 @@ func (s *userService) GetByID(id string) (dto.UserDTO, error) {
 	if err != nil {
 		return dto.UserDTO{}, err
 	}
-	return dto.UserDTO{ID: user.ID.String(), Name: user.Name, Email: user.Email, Role: string(user.Role)}, nil
+	return mapper.UserToDTO(user), nil
 }
 
 func (s *userService) Update(id string, d dto.UpdateUserDTO) (dto.UserDTO, error) {
@@ -71,17 +62,13 @@ func (s *userService) Update(id string, d dto.UpdateUserDTO) (dto.UserDTO, error
 	if err != nil {
 		return dto.UserDTO{}, err
 	}
-	if d.Name != "" {
-		user.Name = d.Name
-	}
-	if d.Email != "" {
-		user.Email = d.Email
-	}
+	//mapper para actualizar los campos del usuario
+	mapper.UpdateUserFromDTO(user, &d)
 	err = s.repo.Update(user)
 	if err != nil {
 		return dto.UserDTO{}, err
 	}
-	return dto.UserDTO{ID: user.ID.String(), Name: user.Name, Email: user.Email}, nil
+	return mapper.UserToDTO(user), nil
 }
 
 func (s *userService) Delete(id string) error {
