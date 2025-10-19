@@ -1,6 +1,10 @@
 package main
 
 import (
+	"apiGo/account"
+	accountHandler "apiGo/account/handler"
+	accountRepository "apiGo/account/repository"
+	accountService "apiGo/account/service"
 	authHandler "apiGo/auth/handler"
 	authRepository "apiGo/auth/repository"
 	authRoutes "apiGo/auth/routes"
@@ -29,9 +33,14 @@ func main() {
 	bootstrap.AutoMigrate(db)
 
 	// Inyección de dependencias para users
-	repo := usersRepository.NewUserRepository(db)
-	service := usersService.NewUserService(repo)
-	handler := usersHandler.NewUserHandler(service)
+	userRepo := usersRepository.NewUserRepository(db)
+	userService := usersService.NewUserService(userRepo)
+	userHandler := usersHandler.NewUserHandler(userService)
+
+	// Inyección de dependencias para accounts
+	accountRepo := accountRepository.NewAccountRepository(db)
+	accountServ := accountService.NewAccountService(accountRepo)
+	accountHand := accountHandler.NewAccountHandler(accountServ)
 
 	// Auth module
 	authRepo := authRepository.NewAuthRepository(db)
@@ -39,7 +48,8 @@ func main() {
 	authHand := authHandler.NewAuthHandler(authServ)
 
 	r := gin.Default()
-	users.RegisterUserRoutes(r, handler)
+	users.RegisterUserRoutes(r, userHandler)
+	account.RegisterAccountRoutes(r, accountHand)
 	authRoutes.RegisterAuthRoutes(r, authHand)
 
 	port := os.Getenv("PORT")

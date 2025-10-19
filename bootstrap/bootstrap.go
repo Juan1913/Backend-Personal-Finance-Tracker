@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	accountModel "apiGo/account/model"
 	usersModel "apiGo/users/model"
 	"log"
 
@@ -9,8 +10,8 @@ import (
 
 func AutoMigrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
-
-		&usersModel.User{}); err != nil {
+		&usersModel.User{},
+		&accountModel.Account{}); err != nil {
 		log.Fatalf("AutoMigrate error: %v", err)
 	}
 }
