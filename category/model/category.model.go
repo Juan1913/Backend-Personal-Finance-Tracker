@@ -20,7 +20,6 @@ type Category struct {
 	Description string       `gorm:"size:255" json:"description"`
 	UserID      uuid.UUID    `gorm:"type:uuid;not null" json:"user_id"`
 	Type        CategoryType `gorm:"type:varchar(10);not null" json:"type"`
-	ParentID    *uuid.UUID   `gorm:"type:uuid" json:"parent_id,omitempty"`
 	CreatedAt   time.Time    `json:"created_at"`
 	UpdatedAt   time.Time    `json:"updated_at"`
 }
