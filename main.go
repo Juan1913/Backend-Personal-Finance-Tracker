@@ -1,19 +1,19 @@
 package main
 
 import (
-	"apiGo/account"
-	accountHandler "apiGo/account/handler"
-	accountRepository "apiGo/account/repository"
-	accountService "apiGo/account/service"
-	authHandler "apiGo/auth/handler"
-	authRepository "apiGo/auth/repository"
-	authRoutes "apiGo/auth/routes"
-	authService "apiGo/auth/service"
-	"apiGo/bootstrap"
-	"apiGo/users"
-	usersHandler "apiGo/users/handler"
-	usersRepository "apiGo/users/repository"
-	usersService "apiGo/users/service"
+	"apiGo/internal/account"
+	accountHandler "apiGo/internal/account/handler"
+	accountRepository "apiGo/internal/account/repository"
+	accountService "apiGo/internal/account/service"
+	authHandler "apiGo/internal/auth/handler"
+	authRepository "apiGo/internal/auth/repository"
+	authRoutes "apiGo/internal/auth/routes"
+	authService "apiGo/internal/auth/service"
+	"apiGo/internal/bootstrap"
+	"apiGo/internal/user"
+	usersHandler "apiGo/internal/user/handler"
+	usersRepository "apiGo/internal/user/repository"
+	usersService "apiGo/internal/user/service"
 	"log"
 	"os"
 
@@ -32,7 +32,7 @@ func main() {
 	// Migración automática
 	bootstrap.AutoMigrate(db)
 
-	// Inyección de dependencias para users
+	// Inyección de dependencias para user
 	userRepo := usersRepository.NewUserRepository(db)
 	userService := usersService.NewUserService(userRepo)
 	userHandler := usersHandler.NewUserHandler(userService)
@@ -48,7 +48,7 @@ func main() {
 	authHand := authHandler.NewAuthHandler(authServ)
 
 	r := gin.Default()
-	users.RegisterUserRoutes(r, userHandler)
+	errors.RegisterUserRoutes(r, userHandler)
 	account.RegisterAccountRoutes(r, accountHand)
 	authRoutes.RegisterAuthRoutes(r, authHand)
 

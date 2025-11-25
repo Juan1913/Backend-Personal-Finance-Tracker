@@ -15,15 +15,15 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/users": {
+        "/api/user": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
-                "summary": "Get all users",
+                "summary": "Get all user",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -53,7 +53,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
                 "summary": "Create user",
                 "parameters": [
@@ -95,13 +95,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/users/{id}": {
+        "/api/user/{id}": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
                 "summary": "Get user by ID",
                 "parameters": [
@@ -148,7 +148,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
                 "summary": "Update user",
                 "parameters": [
@@ -201,7 +201,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "user"
                 ],
                 "summary": "Delete user",
                 "parameters": [
