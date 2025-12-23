@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"apiGo/internal/user/model"
+	"expenseTracker/internal/user/model"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -23,6 +23,8 @@ type userRepository struct {
 func NewUserRepository(db *gorm.DB) UserRepository {
 	return &userRepository{db}
 }
+
+//metodos
 
 func (r *userRepository) Create(user *model.User) error {
 	return r.db.Create(user).Error

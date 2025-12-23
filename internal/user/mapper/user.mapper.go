@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	"apiGo/internal/user/dto"
-	"apiGo/internal/user/model"
+	"expenseTracker/internal/user/dto"
+	"expenseTracker/internal/user/model"
 )
 
 func UserToDTO(user *model.User) dto.UserDTO {

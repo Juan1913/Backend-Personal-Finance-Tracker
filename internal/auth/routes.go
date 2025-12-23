@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"apiGo/internal/auth/handler"
+	"expenseTracker/internal/auth/handler"
 
 	"github.com/gin-gonic/gin"
 )

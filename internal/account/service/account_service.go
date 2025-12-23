@@ -1,10 +1,10 @@
 package service
 
 import (
-	"apiGo/internal/account/dto"
-	"apiGo/internal/account/mapper"
-	"apiGo/internal/account/repository"
-	userModel "apiGo/internal/user/model"
+	"expenseTracker/internal/account/dto"
+	"expenseTracker/internal/account/mapper"
+	"expenseTracker/internal/account/repository"
+	userModel "expenseTracker/internal/user/model"
 
 	"github.com/google/uuid"
 )

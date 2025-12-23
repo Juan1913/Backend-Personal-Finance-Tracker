@@ -1,10 +1,10 @@
 package mapper
 
 import (
-	"apiGo/internal/account/dto"
-	"apiGo/internal/account/model"
-	"apiGo/internal/user/mapper"
-	userModel "apiGo/internal/user/model"
+	"expenseTracker/internal/account/dto"
+	"expenseTracker/internal/account/model"
+	"expenseTracker/internal/user/mapper"
+	userModel "expenseTracker/internal/user/model"
 
 	"github.com/google/uuid"
 )

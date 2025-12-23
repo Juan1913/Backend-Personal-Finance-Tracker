@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"apiGo/internal/account/model"
-	userModel "apiGo/internal/user/model"
+	"expenseTracker/internal/account/model"
+	userModel "expenseTracker/internal/user/model"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

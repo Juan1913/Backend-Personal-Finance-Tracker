@@ -1,8 +1,8 @@
 package service
 
 import (
-	"apiGo/internal/auth/dto"
-	"apiGo/internal/auth/repository"
+	"expenseTracker/internal/auth/dto"
+	"expenseTracker/internal/auth/repository"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

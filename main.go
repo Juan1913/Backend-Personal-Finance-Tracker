@@ -1,21 +1,11 @@
 package main
 
 import (
-	"apiGo/internal/account"
-	accountHandler "apiGo/internal/account/handler"
-	accountRepository "apiGo/internal/account/repository"
-	accountService "apiGo/internal/account/service"
-	authHandler "apiGo/internal/auth/handler"
-	authRepository "apiGo/internal/auth/repository"
-	authRoutes "apiGo/internal/auth/routes"
-	authService "apiGo/internal/auth/service"
-	"apiGo/internal/bootstrap"
-	"apiGo/internal/user"
-	usersHandler "apiGo/internal/user/handler"
-	usersRepository "apiGo/internal/user/repository"
-	usersService "apiGo/internal/user/service"
+	"expenseTracker/internal/bootstrap"
+	"expenseTracker/internal/config"
+	"expenseTracker/internal/factory"
+	"expenseTracker/internal/user"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -23,8 +13,13 @@ import (
 )
 
 func main() {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatalf("failed to load config: %v", err)
+	}
+
+	dsn := cfg.DB.DSN()
 	// Configuración de la base de datos
-	dsn := "host=localhost user=user password=password dbname=apiGo port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
@@ -32,31 +27,13 @@ func main() {
 	// Migración automática
 	bootstrap.AutoMigrate(db)
 
-	// Inyección de dependencias para user
-	userRepo := usersRepository.NewUserRepository(db)
-	userService := usersService.NewUserService(userRepo)
-	userHandler := usersHandler.NewUserHandler(userService)
-
-	// Inyección de dependencias para accounts
-	accountRepo := accountRepository.NewAccountRepository(db)
-	accountServ := accountService.NewAccountService(accountRepo)
-	accountHand := accountHandler.NewAccountHandler(accountServ)
-
-	// Auth module
-	authRepo := authRepository.NewAuthRepository(db)
-	authServ := authService.NewAuthService(authRepo)
-	authHand := authHandler.NewAuthHandler(authServ)
+	// Inyección de dependencias con AppFactory
+	deps := factory.NewAppDependencies(db)
 
 	r := gin.Default()
-	errors.RegisterUserRoutes(r, userHandler)
-	account.RegisterAccountRoutes(r, accountHand)
-	authRoutes.RegisterAuthRoutes(r, authHand)
+	routes.RegisterUserRoutes(r, deps.UserHandler)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	if err := r.Run(":" + port); err != nil {
+	if err := r.Run(":" + cfg.Port); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
 }

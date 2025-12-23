@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	accountModel "apiGo/internal/account/model"
-	usersModel "apiGo/internal/user/model"
+	accountModel "expenseTracker/internal/account/model"
+	usersModel "expenseTracker/internal/user/model"
 	"log"
 
 	"gorm.io/gorm"

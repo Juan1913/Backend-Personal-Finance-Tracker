@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"apiGo/internal/user/model"
+	"expenseTracker/internal/user/model"
 
 	"gorm.io/gorm"
 )

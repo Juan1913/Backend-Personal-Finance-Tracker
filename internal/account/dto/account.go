@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"apiGo/internal/user/dto"
+	"expenseTracker/internal/user/dto"
 )
 
 type AccountDTO struct {

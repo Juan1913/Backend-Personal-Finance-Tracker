@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"apiGo/internal/auth/dto"
-	"apiGo/internal/auth/service"
+	"expenseTracker/internal/auth/dto"
+	"expenseTracker/internal/auth/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

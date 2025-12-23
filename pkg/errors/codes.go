@@ -10,6 +10,7 @@ const (
 	CodeUserBadRequest = "USR-400"
 	StatusBadRequest   = "BAD_REQUEST"
 	MsgUserBadRequest  = "Error al parsear el usuario"
+	UserNotFound       = "USER_NOT_FOUND"
 
 	CodeUserNotFound = "USR-404"
 	StatusNotFound   = "NOT_FOUND"
@@ -24,4 +25,12 @@ const (
 	CodeUserEmailExists = "USR-409"
 	StatusConflict      = "CONFLICT"
 	MsgUserEmailExists  = "El email ya está registrado"
+
+	// Categorías
+	CodeCategoryBadRequest   = "CAT-400"
+	MsgCategoryBadRequest    = "Error al parsear la categoría"
+	CodeCategoryUserNotFound = "CAT-404"
+	MsgCategoryUserNotFound  = "Usuario para la categoría no encontrado"
+	CodeCategoryCreateError  = "CAT-500"
+	MsgCategoryCreateError   = "Error al crear la categoría"
 )

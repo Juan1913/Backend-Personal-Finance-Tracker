@@ -1,8 +1,8 @@
 package account
 
 import (
-	"apiGo/internal/account/handler"
-	authMiddleware "apiGo/internal/auth/middleware"
+	"expenseTracker/internal/account/handler"
+	authMiddleware "expenseTracker/internal/auth/middleware"
 
 	"github.com/gin-gonic/gin"
 )

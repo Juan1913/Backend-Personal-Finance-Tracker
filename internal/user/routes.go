@@ -1,8 +1,8 @@
-package errors
+package routes
 
 import (
-	authMiddleware "apiGo/internal/auth/middleware"
-	"apiGo/internal/user/handler"
+	authMiddleware "expenseTracker/internal/auth/middleware"
+	"expenseTracker/internal/user/handler"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"

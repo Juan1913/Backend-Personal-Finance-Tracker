@@ -1,20 +1,19 @@
 package handler
 
 import (
-	"apiGo/internal/user/dto"
-	service2 "apiGo/internal/user/service"
-	errors2 "apiGo/pkg/errors"
-	"apiGo/users/service"
+	"expenseTracker/internal/user/dto"
+	"expenseTracker/internal/user/service"
+	"expenseTracker/pkg/errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
-	Service service2.UserService
+	Service service.UserService
 }
 
-func NewUserHandler(s service2.UserService) *UserHandler {
+func NewUserHandler(s service.UserService) *UserHandler {
 	return &UserHandler{Service: s}
 }
 
@@ -30,41 +29,41 @@ func NewUserHandler(s service2.UserService) *UserHandler {
 func (h *UserHandler) Create(c *gin.Context) {
 	var input dto.CreateUserDTO
 	if err := c.ShouldBindJSON(&input); err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserBadRequest,
-			errors2.StatusBadRequest,
-			errors2.MsgUserBadRequest,
+		er := errors.NewApiError(
+			errors.CodeUserBadRequest,
+			errors.StatusBadRequest,
+			errors.MsgUserBadRequest,
 			[]string{err.Error()},
 			http.StatusBadRequest,
 		)
-		errors2.WriteError(c.Writer, er.(*errors2.ApiError))
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	user, err := h.Service.Create(input)
 	if err != nil {
-		if err == service.ErrEmailAlreadyExists {
-			er := errors2.NewApiError(
-				errors2.CodeUserEmailExists,
-				errors2.StatusConflict,
-				errors2.MsgUserEmailExists,
-				[]string{"El email ya está en uso: " + input.Email},
+		if emailErr, ok := err.(*errors.EmailAlreadyExistsError); ok {
+			er := errors.NewApiError(
+				errors.CodeUserEmailExists,
+				errors.StatusConflict,
+				errors.MsgUserEmailExists,
+				[]string{"El email ya está en uso: " + emailErr.Email},
 				http.StatusConflict,
 			)
-			errors2.WriteError(c.Writer, er.(*errors2.ApiError))
+			errors.WriteError(c.Writer, er.(*errors.ApiError))
 			return
 		}
-		if apiErr, ok := err.(*errors2.ApiError); ok {
-			errors2.WriteError(c.Writer, apiErr)
+		if apiErr, ok := err.(*errors.ApiError); ok {
+			errors.WriteError(c.Writer, apiErr)
 			return
 		}
-		er := errors2.NewApiError(
-			errors2.CodeUserCreateError,
-			errors2.StatusInternalServerError,
-			errors2.MsgUserCreateError,
+		er := errors.NewApiError(
+			errors.CodeUserCreateError,
+			errors.StatusInternalServerError,
+			errors.MsgUserCreateError,
 			[]string{err.Error()},
 			http.StatusInternalServerError,
 		)
-		errors2.WriteError(c.Writer, er.(*errors2.ApiError))
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	c.JSON(http.StatusCreated, user)
@@ -79,14 +78,14 @@ func (h *UserHandler) Create(c *gin.Context) {
 func (h *UserHandler) GetAll(c *gin.Context) {
 	users, err := h.Service.GetAll()
 	if err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserCreateError,
-			errors2.StatusInternalServerError,
-			errors2.MsgUserGetError,
+		er := errors.NewApiError(
+			errors.CodeUserCreateError,
+			errors.StatusInternalServerError,
+			errors.MsgUserGetError,
 			[]string{err.Error()},
 			http.StatusInternalServerError,
 		)
-		errors2.WriteError(c.Writer, er)
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	c.JSON(http.StatusOK, users)
@@ -104,14 +103,14 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 	id := c.Param("id")
 	user, err := h.Service.GetByID(id)
 	if err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserNotFound,
-			errors2.StatusNotFound,
-			errors2.MsgUserNotFound,
+		er := errors.NewApiError(
+			errors.CodeUserNotFound,
+			errors.StatusNotFound,
+			errors.MsgUserNotFound,
 			[]string{err.Error()},
 			http.StatusNotFound,
 		)
-		errors2.WriteError(c.Writer, er)
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -131,26 +130,26 @@ func (h *UserHandler) Update(c *gin.Context) {
 	id := c.Param("id")
 	var input dto.UpdateUserDTO
 	if err := c.ShouldBindJSON(&input); err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserBadRequest,
-			errors2.StatusBadRequest,
-			errors2.MsgUserBadRequest,
+		er := errors.NewApiError(
+			errors.CodeUserBadRequest,
+			errors.StatusBadRequest,
+			errors.MsgUserBadRequest,
 			[]string{err.Error()},
 			http.StatusBadRequest,
 		)
-		errors2.WriteError(c.Writer, er)
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	user, err := h.Service.Update(id, input)
 	if err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserCreateError,
-			errors2.StatusInternalServerError,
-			errors2.MsgUserUpdateError,
+		er := errors.NewApiError(
+			errors.CodeUserCreateError,
+			errors.StatusInternalServerError,
+			errors.MsgUserUpdateError,
 			[]string{err.Error()},
 			http.StatusInternalServerError,
 		)
-		errors2.WriteError(c.Writer, er)
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -167,14 +166,14 @@ func (h *UserHandler) Update(c *gin.Context) {
 func (h *UserHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if err := h.Service.Delete(id); err != nil {
-		er := errors2.NewApiError(
-			errors2.CodeUserCreateError,
-			errors2.StatusInternalServerError,
-			errors2.MsgUserDeleteError,
+		er := errors.NewApiError(
+			errors.CodeUserCreateError,
+			errors.StatusInternalServerError,
+			errors.MsgUserDeleteError,
 			[]string{err.Error()},
 			http.StatusInternalServerError,
 		)
-		errors2.WriteError(c.Writer, er)
+		errors.WriteError(c.Writer, er.(*errors.ApiError))
 		return
 	}
 	c.Status(http.StatusNoContent)

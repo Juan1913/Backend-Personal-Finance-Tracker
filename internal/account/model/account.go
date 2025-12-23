@@ -1,7 +1,7 @@
 package model
 
 import (
-	"apiGo/internal/user/model"
+	"expenseTracker/internal/user/model"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
